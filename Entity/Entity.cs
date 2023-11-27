@@ -1,42 +1,34 @@
-﻿namespace TahanECS.Entity
-{
-    public class Entity
-    {
-        public int Id
-        {
-            get { return _id; }
-        }
+﻿using System;
 
-        private int _id;
+namespace TahanECS.Entity
+{
+    public class Entity : IDisposable
+    {
+        public int Id { get; private set; }
 
         private EcsWorld _ecsWorld;
 
-        public void Init(EcsWorld world)
+        public Entity(EcsWorld world)
         {
-            _id = world.CreateEntity();
+            Id = world.CreateEntity();
             _ecsWorld = world;
-            OnInit();
-        }
-
-        protected virtual void OnInit()
-        {
         }
 
         public void Dispose()
         {
-            _ecsWorld.DestroyEntity(_id);
+            _ecsWorld.DestroyEntity(Id);
             _ecsWorld = null;
-            _id = -1;
+            Id = -1;
         }
 
         public void SetData<T>(T component) where T : struct
         {
-            _ecsWorld.SetComponent(_id, ref component);
+            _ecsWorld.SetComponent(Id, ref component);
         }
 
         public ref T GetData<T>() where T : struct
         {
-            return ref _ecsWorld.GetComponent<T>(_id);
+            return ref _ecsWorld.GetComponent<T>(Id);
         }
     }
 }
