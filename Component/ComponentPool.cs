@@ -4,7 +4,8 @@ namespace TahanECS.Component
 {
     public class ComponentPool<T> : IComponentPool where T : struct
     {
-        private Component[] _components = new Component[256];
+        private const int PoolSize = 256;
+        private Component[] _components = new Component[PoolSize];
         private int _size;
 
         void IComponentPool.AllocateComponent()
